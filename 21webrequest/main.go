@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -14,7 +15,10 @@ func main() {
 	// PerformGetRequest()
 
 	//post request
-	PerformPostRequest()
+	// PerformPostRequest()
+
+	//post form  request
+	PerformPostFormRequest()
 }
 
 func PerformGetRequest() {
@@ -62,4 +66,23 @@ func PerformPostRequest() {
 
 	fmt.Println(string(content))
 
+}
+func PerformPostFormRequest()  {
+	const myurl = "https://jsonplaceholder.typicode.com/posts"
+
+	data :=url.Values{}
+	data.Add("Firstname","samar")
+	data.Add("lastname","kumar")
+	data.Add("email","samar@fja.com")
+
+	response,err := http.PostForm(myurl,data)
+	if err != nil {
+		panic(err)
+	}
+
+	defer response.Body.Close()
+
+	content,err:= ioutil.ReadAll(response.Body)
+	fmt.Printf(string(content))
+	
 }
